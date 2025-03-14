@@ -13,4 +13,4 @@ const customJestConfig = {
 }
 
 // createJestConfigを定義することによって、本ファイルで定義された設定がNext.jsの設定に反映されます
-module.exports = createJestConfig(customJestConfig) 
+module.exports = createJestConfig(customJestConfig)
