@@ -1,0 +1,32 @@
+{
+  "name": "mini-agent",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "chat": "tsx src/cli/chat.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^1.2.5",
+    "ai": "^4.1.61",
+    "dotenv-cli": "^8.0.0",
+    "inquirer": "^9.2.15",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.24",
+    "eslint": "^8",
+    "eslint-config-standard": "^17.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
