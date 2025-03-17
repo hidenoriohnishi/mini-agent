@@ -31,4 +31,4 @@ yarn-error.log*
 *.swo
 
 # temp directory
-/temp
+/temp/
