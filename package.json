@@ -8,14 +8,14 @@
     "lint:fix": "npx eslint --fix --ext .ts .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "chat": "tsx src/cli/chat.ts"
+    "start": "npx dotenv -e .env.local -- tsx src/agent.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.2.5",
     "ai": "^4.1.61",
-    "dotenv-cli": "^8.0.0",
     "inquirer": "^9.2.15",
-    "picocolors": "^1.0.0"
+    "picocolors": "^1.0.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.7",
@@ -23,6 +23,7 @@
     "@types/node": "^20.11.24",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^8",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.31.0",
