@@ -4,6 +4,8 @@ import { calcTool } from './calc'
 import { compareTool } from './compare'
 import { lcmTool } from './lcm'
 import { gcdTool } from './gcd'
+import { fileReadTool } from './fileRead'
+import { fileWriteTool } from './fileWrite'
 
 export const ToolSchema = z.object({
   name: z.string().describe('ツール名'),
@@ -21,5 +23,7 @@ export const tools: Tool[] = [
   calcTool,
   compareTool,
   lcmTool,
-  gcdTool
+  gcdTool,
+  fileReadTool,
+  fileWriteTool
 ]
