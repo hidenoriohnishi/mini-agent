@@ -1,8 +1,7 @@
 import { z } from 'zod'
 import fs from 'fs'
-import path from 'path'
 import type { Tool } from './tool'
-import 'dotenv/config'
+import { validateFilePath, addLineNumbers, ensureFileExists } from '../lib/file'
 
 export const fileWriteSchema = z.object({
   filename: z.string().describe('書き込むファイル名'),
@@ -24,22 +23,9 @@ z.object({
   execute: async (args: string) => {
     try {
       const validatedData = fileWriteSchema.parse(JSON.parse(args))
-      const tempDir = process.env.TEMP_DIR || './temp'
-      const filePath = path.join(tempDir, validatedData.filename)
+      const filePath = validateFilePath(validatedData.filename)
 
-      const normalizedFilePath = path.normalize(filePath)
-      const normalizedTempDir = path.normalize(tempDir)
-
-      if (!normalizedFilePath.startsWith(normalizedTempDir)) {
-        return 'エラー: TEMP_DIR外のファイルにはアクセスできません'
-      }
-
-      if (!fs.existsSync(filePath)) {
-        if (!fs.existsSync(path.dirname(filePath))) {
-          fs.mkdirSync(path.dirname(filePath), { recursive: true })
-        }
-        fs.writeFileSync(filePath, '')
-      }
+      ensureFileExists(filePath)
 
       const content = fs.readFileSync(filePath, 'utf-8')
       const lines = content.split('\n')
@@ -65,10 +51,8 @@ z.object({
       fs.writeFileSync(filePath, lines.join('\n'))
 
       const updatedContent = fs.readFileSync(filePath, 'utf-8')
-      const updatedLines = updatedContent.split('\n')
-      const numberedLines = updatedLines.map((line, index) => `${index + 1}: ${line}`).join('\n')
-
-      return numberedLines
+      const numberedContent = addLineNumbers(updatedContent)
+      return numberedContent
     } catch (error) {
       if (error instanceof z.ZodError) {
         return `エラー: ${error.errors.map(e => e.message).join(', ')}`

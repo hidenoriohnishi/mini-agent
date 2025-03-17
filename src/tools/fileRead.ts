@@ -1,8 +1,7 @@
 import { z } from 'zod'
 import fs from 'fs'
-import path from 'path'
 import type { Tool } from './tool'
-import 'dotenv/config'
+import { validateFilePath, addLineNumbers } from '../lib/file'
 
 export const fileReadSchema = z.object({
   filename: z.string().describe('読み込むファイル名')
@@ -18,26 +17,15 @@ z.object({
   execute: async (args: string) => {
     try {
       const validatedData = fileReadSchema.parse(JSON.parse(args))
-      const tempDir = process.env.TEMP_DIR || './temp'
-      const filePath = path.join(tempDir, validatedData.filename)
-
-      const normalizedFilePath = path.normalize(filePath)
-      const normalizedTempDir = path.normalize(tempDir)
-
-      if (!normalizedFilePath.startsWith(normalizedTempDir)) {
-        return 'エラー: TEMP_DIR外のファイルにはアクセスできません'
-      }
+      const filePath = validateFilePath(validatedData.filename)
 
       if (!fs.existsSync(filePath)) {
         return `エラー: ファイル ${validatedData.filename} が存在しません`
       }
 
       const content = fs.readFileSync(filePath, 'utf-8')
-      const lines = content.split('\n')
-
-      const numberedLines = lines.map((line, index) => `${index + 1}: ${line}`).join('\n')
-
-      return numberedLines
+      const numberedContent = addLineNumbers(content)
+      return numberedContent
     } catch (error) {
       if (error instanceof z.ZodError) {
         return `エラー: ${error.errors.map(e => e.message).join(', ')}`
