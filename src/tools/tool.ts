@@ -6,6 +6,7 @@ import { lcmTool } from './lcm'
 import { gcdTool } from './gcd'
 import { fileReadTool } from './fileRead'
 import { fileWriteTool } from './fileWrite'
+import { responseTool } from './response'
 
 export const ToolSchema = z.object({
   name: z.string().describe('ツール名'),
@@ -25,5 +26,6 @@ export const tools: Tool[] = [
   lcmTool,
   gcdTool,
   fileReadTool,
-  fileWriteTool
+  fileWriteTool,
+  responseTool
 ]

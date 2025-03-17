@@ -11,7 +11,7 @@ import { MODEL } from './constant'
 
 const model = openai(MODEL)
 
-const toolCallRegex = /<tool[^>]*type="(?<name>[^"]+)"[^>]*>(?<parameters>[\s\S]*?)<\/tool>(?:\s*)$/
+const toolCallRegex = /<tool[^>]*type="(?<n>[^"]+)"[^>]*>(?<parameters>[\s\S]*?)<\/tool>(?:\s*)$/
 
 async function processToolCalls (text: string): Promise<string | undefined> {
   const match = text.match(toolCallRegex)
@@ -20,7 +20,7 @@ async function processToolCalls (text: string): Promise<string | undefined> {
   const tool = tools.find((t: { name: string }) => t.name === name)
   if (tool && parameters) {
     const toolResult = await tool.execute(parameters)
-    return `<result>${toolResult}</result>`
+    return `<r>${toolResult}</r>`
   }
   return undefined
 }
@@ -38,9 +38,9 @@ async function main () {
       }
     ])
 
-    messages.push({ role: 'user', content: input })
-
     if (input === 'exit') process.exit(0)
+
+    messages.push({ role: 'user', content: `<user-input>${input}</user-input>` })
 
     try {
       while (true) {
@@ -56,7 +56,7 @@ async function main () {
           console.log(pc.cyan(result))
           messages.push({ role: 'system', content: result })
         }
-        if (text.includes('<answer>')) break
+        if (text.includes('<response>')) break
       }
     } catch (error) {
       console.error(pc.red('エラー:'), error)
