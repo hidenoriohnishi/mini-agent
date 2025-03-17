@@ -23,4 +23,4 @@ z.object({
       return `エラー: ${error}`
     }
   }
-} 
+}
