@@ -29,20 +29,17 @@ async function main () {
   messages.push({ role: 'system', content: SYSTEM_PROMPT })
   while (true) {
     try {
-      while (true) {
-        const { text } = await generateText({
-          model,
-          messages,
-          temperature: 0.3
-        })
-        messages.push({ role: 'assistant', content: text })
-        console.log(pc.yellow(text))
-        const result = await processToolCalls(text)
-        if (result) {
-          console.log(pc.cyan(result))
-          messages.push({ role: 'system', content: result })
-          if (result.includes('<tool-result>')) break
-        }
+      const { text } = await generateText({
+        model,
+        messages,
+        temperature: 0.3
+      })
+      messages.push({ role: 'assistant', content: text })
+      console.log(pc.yellow(text))
+      const result = await processToolCalls(text)
+      if (result) {
+        messages.push({ role: 'system', content: result })
+        console.log(pc.cyan(result))
       }
     } catch (error) {
       console.error(pc.red('エラー:'), error)
