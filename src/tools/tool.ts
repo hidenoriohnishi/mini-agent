@@ -7,6 +7,7 @@ import { gcdTool } from './gcd'
 import { fileReadTool } from './fileRead'
 import { fileWriteTool } from './fileWrite'
 import { responseTool } from './response'
+import { nodRequestTool } from './nodRequest'
 
 export const ToolSchema = z.object({
   name: z.string().describe('ツール名'),
@@ -27,5 +28,6 @@ export const tools: Tool[] = [
   gcdTool,
   fileReadTool,
   fileWriteTool,
-  responseTool
+  responseTool,
+  nodRequestTool
 ]
